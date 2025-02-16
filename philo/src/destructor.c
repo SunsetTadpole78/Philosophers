@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:05:56 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/13 18:16:41 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:17:24 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_game(t_game *game)
 {
-	int			i;
+	int				i;
 	t_philosopher	*cur;
 	t_philosopher	*tmp;
 
@@ -22,13 +22,19 @@ void	free_game(t_game *game)
 	cur = game->first;
 	while (i < game->count)
 	{
-		//printf("%i %p {%p %p} %p\n", cur->id, cur, cur->left_fork, cur->right_fork, cur->next);
-		free(cur->left_fork);
+		pthread_join(cur->thread, NULL);
+		cur = cur->next;
+		i++;
+	}
+	i = 0;
+	cur = game->first;
+	while (i < game->count)
+	{
 		tmp = cur;
 		cur = cur->next;
 		free(tmp);
 		i++;
 	}
-	free(game->forks);
+	destroy_mutexs();
 	free(game);
 }

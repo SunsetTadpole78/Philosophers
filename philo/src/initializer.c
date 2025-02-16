@@ -6,71 +6,75 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:01:27 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/13 18:15:52 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:07:39 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_fork	*create_fork(int philosopher_id)
+t_philosopher	*create_philosopher(int id, t_game *game, t_philosopher *old)
 {
-	t_fork	*fork;
+	t_philosopher	*thomas;
 
-	fork = malloc(sizeof(t_fork));
-	if (!fork)
+	thomas = malloc(sizeof(t_philosopher));
+	if (!thomas)
 		return (NULL);
-	fork->philosopher_id = philosopher_id;
-	fork->is_used = 0;
-	return (fork);
-}
-
-t_philosopher	*create_philosopher(int id, t_fork *his_fork, t_philosopher *old)
-{
-	t_philosopher	*philosopher;
-
-	philosopher = malloc(sizeof(t_philosopher));
-	if (!philosopher)
-		return (NULL);
-	philosopher->id = id;
-	philosopher->left_fork = his_fork;
-	philosopher->alive = 1;
-	philosopher->is_eating = 0;
-	philosopher->is_thinking = 0;
-	philosopher->is_sleeping = 0;
+	thomas->id = id;
+	thomas->left_fork = register_mutex(FORK, id);
+	thomas->right_fork = NULL;
+	thomas->last_eat = -1;
+	thomas->last_sleep = -1;
+	thomas->game = game;
 	if (old)
-		old->right_fork = his_fork;
-	return (philosopher);
+		old->right_fork = thomas->left_fork;
+	register_mutex(LAST_EAT, id);
+	register_mutex(LAST_SLEEP, id);
+	return (thomas);
 }
 
-t_game	*init_game(char **argv)
+static void	register_mutexs(void)
 {
-	t_game	*game;
-	int		i;
+	register_mutex(START_TIME, 0);
+	register_mutex(PRINT_F, 0);
+	register_mutex(TIME_TO_DIE, 0);
+	register_mutex(TIME_TO_EAT, 0);
+	register_mutex(STOP, 0);
+	register_mutex(COUNT, 0);
+}
+
+static void	create_philosophers(t_game *game)
+{
+	int				i;
 	t_philosopher	*cur;
 
-	game = malloc(sizeof(t_game));
-	if (!game)
-		return (NULL);
-	game->count = ft_atoi(argv[0]);
-	game->forks = malloc(sizeof(t_fork *) * (game->count + 1));
-	game->forks[0] = create_fork(1);
-	game->first = create_philosopher(1, game->forks[0], NULL);
-	if (!game->first)
-	{
-		//TODO
-		return (NULL);
-	}
+	game->first = create_philosopher(1, game, NULL);
 	i = 1;
 	cur = game->first;
 	while (i < game->count)
 	{
-		game->forks[i - 1] = create_fork(i + 1);
-		cur->next = create_philosopher(i + 1, game->forks[i - 1], cur);
+		cur->next = create_philosopher(i + 1, game, cur);
 		i++;
 		cur = cur->next;
 	}
 	cur->next = game->first;
 	cur->right_fork = game->first->left_fork;
-	cur = game->first;
+}
+
+t_game	*init_game(char **argv)
+{
+	t_game	*game;
+
+	game = malloc(sizeof(t_game));
+	if (!game)
+		return (NULL);
+	game->count = ft_atoi(argv[0]);
+	game->time_to_die = ft_atoi(argv[1]);
+	game->time_to_eat = ft_atoi(argv[2]);
+	game->time_to_sleep = ft_atoi(argv[3]);
+	game->eat_time = -1;
+	game->start_time = -1;
+	game->stop = 0;
+	register_mutexs();
+	create_philosophers(game);
 	return (game);
 }

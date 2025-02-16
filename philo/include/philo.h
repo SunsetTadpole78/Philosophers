@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:44:40 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/13 18:21:06 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:20:44 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,79 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 
-typedef struct	s_fork
+enum	e_MutexId
 {
-	int	philosopher_id;
-	int	is_used;
-}	t_fork;
+	FORK,
+	START_TIME,
+	PRINT_F,
+	LAST_EAT,
+	LAST_SLEEP,
+	TIME_TO_DIE,
+	TIME_TO_EAT,
+	STOP,
+	COUNT
+};
 
-typedef struct	s_philosopher
+typedef struct s_mutex
 {
-	int		id;
-	int		alive;
-	int		is_eating;
-	int		is_thinking;
-	int		is_sleeping;
-	t_fork	*left_fork;
-	t_fork	*right_fork;
+	enum e_MutexId	id;
+	int				variant;
+	pthread_mutex_t	mutex;
+	int				is_lock;
+	pthread_mutex_t	lock;
+}	t_mutex;
+
+typedef struct s_mutexs
+{
+	t_mutex			**mutexs;
+	int				count;
+}	t_mutexs;
+
+typedef struct s_philosopher
+{
+	int						id;
+	long					last_eat;
+	long					last_sleep;
+	pthread_t				thread;
+	t_mutex					*left_fork;
+	t_mutex					*right_fork;
 	struct s_philosopher	*next;
+	struct s_game			*game;
 }	t_philosopher;
 
-typedef struct	s_game
+typedef struct s_game
 {
-	int	count;
+	int				count;
+	int				time_to_die;
+	int				time_to_eat;
+	int				eat_time;
+	int				time_to_sleep;
+	long			start_time;
+	int				stop;
 	t_philosopher	*first;
-	t_fork		**forks;
 }	t_game;
 
-int	ft_strlen(char *str);
-int	ft_atoi(char *str);
-int	ft_is_uint(char *str);
+int		ft_strlen(char *str);
+int		ft_atoi(char *str);
+int		ft_is_uint(char *str);
+void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
 
 t_game	*init_game(char **argv);
 void	free_game(t_game *game);
 
-int	is_correct(char **args);
+int		is_correct(char **args);
 
-# endif
+int		start_game(t_game *game);
+int		is_dead(t_philosopher *thomas);
+long	get_last_eat(t_philosopher *thomas);
+
+t_mutex	*register_mutex(enum e_MutexId id, int variant);
+t_mutex	*get_mutex_by_id(enum e_MutexId id, int variant);
+int		lock_mutex(enum e_MutexId id, int variant);
+int		unlock_mutex(enum e_MutexId id, int variant);
+void	unlock_all_mutexs(void);
+void	destroy_mutexs(void);
+int		is_lock(t_mutex *mutex);
+#endif

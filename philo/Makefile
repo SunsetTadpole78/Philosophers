@@ -5,9 +5,11 @@ INCLUDE_DIR = include
 OBJS_DIR = objs
 
 FILES = philo.c		\
+	mutex_manager.c	\
 	initializer.c	\
 	destructor.c	\
 	args_checker.c	\
+	game.c	\
 	utils.c
 
 OBJS = $(FILES:%.c=$(OBJS_DIR)/%.o)
