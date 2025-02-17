@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:01:27 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/16 11:44:52 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:27:23 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_philosopher	*create_philosopher(int id, t_game *game, t_philosopher *old)
 	thomas->right_fork = NULL;
 	thomas->last_eat = -1;
 	thomas->last_sleep = -1;
+	thomas->meals_count = 0;
 	thomas->game = game;
 	if (old)
 		old->right_fork = thomas->left_fork;
@@ -38,6 +39,7 @@ static void	register_mutexs(void)
 	register_mutex(PRINT_F, 0);
 	register_mutex(TIME_TO_DIE, 0);
 	register_mutex(TIME_TO_EAT, 0);
+	register_mutex(MEALS_COUNT, 0);
 	register_mutex(STOP, 0);
 	register_mutex(COUNT, 0);
 }
@@ -71,7 +73,9 @@ t_game	*init_game(char **argv)
 	game->time_to_die = ft_atoi(argv[1]);
 	game->time_to_eat = ft_atoi(argv[2]);
 	game->time_to_sleep = ft_atoi(argv[3]);
-	game->eat_time = -1;
+	game->min_meals_count = -1;
+	if (argv[4])
+		game->min_meals_count = ft_atoi(argv[4]);
 	game->start_time = -1;
 	game->stop = 0;
 	register_mutexs();

@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:15:30 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/17 08:45:46 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:29:28 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	safe_display(char *message, t_philosopher *thomas, int exception)
 {
 	lock_mutex(PRINT_F, 0);
 	if (exception || !is_stop(thomas->game))
-		printf("%li %i %s\n", game_timestramp(thomas->game), thomas->id, message);
+		printf("%li %i %s\n", game_timestramp(thomas->game),
+			thomas->id, message);
 	unlock_mutex(PRINT_F, 0);
 }
 
@@ -173,23 +174,30 @@ int	take_forks(t_philosopher *thomas)
 {
 	if (is_dead(thomas))
 		return (0);
-	if (thomas_count(thomas->game) == 1)
-	{
-		look_spaghetti_bowl(thomas);
-		return (0);
-	}
 	if (thomas->id % 2 == 0)
 	{
-		if (!take_fork(thomas, thomas->next->id, -1))
+		if (!take_fork(thomas, thomas->right_fork->variant, -1))
 			return (0);
-		if (!take_fork(thomas, thomas->id, thomas->next->id))
+		if (thomas_count(thomas->game) == 1)
+		{
+			unlock_mutex(FORK, thomas->right_fork->variant);
+			look_spaghetti_bowl(thomas);
+			return (0);
+		}
+		if (!take_fork(thomas, thomas->left_fork->variant, thomas->right_fork->variant))
 			return (0);
 	}
 	else
 	{
-		if (!take_fork(thomas, thomas->id, -1))
+		if (!take_fork(thomas, thomas->left_fork->variant, -1))
 			return (0);
-		if (!take_fork(thomas, thomas->next->id, thomas->id))
+		if (thomas_count(thomas->game) == 1)
+		{
+			unlock_mutex(FORK, thomas->left_fork->variant);
+			look_spaghetti_bowl(thomas);
+			return (0);
+		}
+		if (!take_fork(thomas, thomas->right_fork->variant, thomas->left_fork->variant))
 			return (0);
 	}
 	return (1);
@@ -224,6 +232,56 @@ void	eat(t_philosopher *thomas)
 			return ;
 		usleep(1);
 	}
+}
+
+int	get_min_meals_count(t_game *game)
+{
+	int	v;
+
+	lock_mutex(MEALS_COUNT, 0);
+	v = game->min_meals_count;
+	unlock_mutex(MEALS_COUNT, 0);
+	return (v);
+}
+
+int	get_meals_count(t_philosopher *thomas)
+{
+	int	v;
+
+	lock_mutex(MEALS_COUNT, 0);
+	v = thomas->meals_count;
+	unlock_mutex(MEALS_COUNT, 0);
+	return (v);
+}
+
+void	add_meal(t_philosopher *thomas)
+{
+	lock_mutex(MEALS_COUNT, 0);
+	thomas->meals_count++;
+	unlock_mutex(MEALS_COUNT, 0);
+}
+
+void	check_meals(t_philosopher *thomas)
+{
+	t_philosopher	*other_thomas;
+	int	min;
+
+	min = get_min_meals_count(thomas->game);
+	if (min == -1)
+		return ;
+	add_meal(thomas);
+	if (get_meals_count(thomas) < min)
+		return ;
+	other_thomas = thomas->next;
+	while (other_thomas->id != thomas->id)
+	{
+		if (get_meals_count(other_thomas) < min)
+			return ;
+		other_thomas = other_thomas->next;
+	}
+	lock_mutex(STOP, 0);
+	thomas->game->stop = 1;
+	unlock_mutex(STOP, 0);
 }
 
 void	drop_forks(t_philosopher *thomas)
@@ -280,6 +338,7 @@ void	*life(void *args)
 		think(thomas);
 		unlock_forks = take_forks(thomas);
 		eat(thomas);
+		check_meals(thomas);
 		if (unlock_forks)
 			drop_forks(thomas);
 		go_sleep(thomas);

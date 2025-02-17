@@ -10,7 +10,10 @@ FILES = philo.c		\
 	destructor.c	\
 	args_checker.c	\
 	game.c	\
-	utils.c
+	utils/ft_atoi.c	\
+	utils/ft_is_uint.c	\
+	utils/ft_realloc.c	\
+	utils/ft_strlen.c
 
 OBJS = $(FILES:%.c=$(OBJS_DIR)/%.o)
 

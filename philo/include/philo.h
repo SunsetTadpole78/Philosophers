@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:44:40 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/16 11:53:26 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:27:05 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ enum	e_MutexId
 	PRINT_F,
 	LAST_EAT,
 	LAST_SLEEP,
+	MEALS_COUNT,
 	TIME_TO_DIE,
 	TIME_TO_EAT,
 	STOP,
@@ -52,6 +53,7 @@ typedef struct s_philosopher
 	int						id;
 	long					last_eat;
 	long					last_sleep;
+	int						meals_count;
 	pthread_t				thread;
 	t_mutex					*left_fork;
 	t_mutex					*right_fork;
@@ -64,7 +66,7 @@ typedef struct s_game
 	int				count;
 	int				time_to_die;
 	int				time_to_eat;
-	int				eat_time;
+	int				min_meals_count;
 	int				time_to_sleep;
 	long			start_time;
 	int				stop;
