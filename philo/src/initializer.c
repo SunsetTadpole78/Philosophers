@@ -39,7 +39,6 @@ static void	register_mutexs(void)
 	register_mutex(TIME_TO_DIE, 0);
 	register_mutex(TIME_TO_EAT, 0);
 	register_mutex(STOP, 0);
-	register_mutex(CHECK_STOP, 0);
 	register_mutex(COUNT, 0);
 }
 

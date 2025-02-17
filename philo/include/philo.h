@@ -29,7 +29,6 @@ enum	e_MutexId
 	TIME_TO_DIE,
 	TIME_TO_EAT,
 	STOP,
-	CHECK_STOP,
 	COUNT
 };
 
@@ -94,5 +93,4 @@ int		lock_mutex(enum e_MutexId id, int variant);
 int		unlock_mutex(enum e_MutexId id, int variant);
 void	unlock_all_mutexs(void);
 void	destroy_mutexs(void);
-int		is_lock(t_mutex *mutex);
 #endif
