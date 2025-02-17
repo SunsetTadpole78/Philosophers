@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:15:30 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/16 11:15:08 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/17 08:45:46 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,11 @@ void	ft_usleep(int ms)
 	}
 }
 
-void	safe_display(char *message, t_philosopher *thomas)
+void	safe_display(char *message, t_philosopher *thomas, int exception)
 {
 	lock_mutex(PRINT_F, 0);
-	printf("%li %i %s\n", game_timestramp(thomas->game), thomas->id, message);
+	if (exception || !is_stop(thomas->game))
+		printf("%li %i %s\n", game_timestramp(thomas->game), thomas->id, message);
 	unlock_mutex(PRINT_F, 0);
 }
 
@@ -80,10 +81,12 @@ int	get_time_to_eat(t_game *game)
 
 void	rip(t_philosopher *thomas)
 {
+	if (is_stop(thomas->game))
+		return ;
 	lock_mutex(STOP, 0);
 	thomas->game->stop = 1;
 	unlock_mutex(STOP, 0);
-	safe_display("died", thomas);
+	safe_display("died", thomas, 1);
 }
 
 int	is_stop(t_game *game)
@@ -133,7 +136,7 @@ void	think(t_philosopher *thomas)
 {
 	if (is_dead(thomas))
 		return ;
-	safe_display("is thinking", thomas);
+	safe_display("is thinking", thomas, 0);
 }
 
 int	thomas_count(t_game *game)
@@ -162,7 +165,7 @@ int	take_fork(t_philosopher *thomas, int id, int other_id)
 			unlock_mutex(FORK, other_id);
 		return (0);
 	}
-	safe_display("has taken a fork", thomas);
+	safe_display("has taken a fork", thomas, 0);
 	return (1);
 }
 
@@ -214,7 +217,7 @@ void	eat(t_philosopher *thomas)
 	if (is_dead(thomas))
 		return ;
 	set_last_eat(thomas);
-	safe_display("is eating", thomas);
+	safe_display("is eating", thomas, 0);
 	while (timestramp() < get_last_eat(thomas))
 	{
 		if (check_others(thomas))
@@ -251,9 +254,7 @@ void	go_sleep(t_philosopher *thomas)
 	if (is_dead(thomas))
 		return ;
 	set_last_sleep(thomas);
-	if (is_dead(thomas))
-		return ;
-	safe_display("is sleeping", thomas);
+	safe_display("is sleeping", thomas, 0);
 	while (timestramp() < get_last_sleep(thomas))
 	{
 		if (is_dead(thomas))

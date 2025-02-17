@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:01:27 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/16 11:07:39 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:44:52 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static void	register_mutexs(void)
 	register_mutex(TIME_TO_DIE, 0);
 	register_mutex(TIME_TO_EAT, 0);
 	register_mutex(STOP, 0);
+	register_mutex(CHECK_STOP, 0);
 	register_mutex(COUNT, 0);
 }
 

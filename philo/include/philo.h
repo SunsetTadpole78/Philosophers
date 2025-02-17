@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:44:40 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/16 11:20:44 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:53:26 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ enum	e_MutexId
 	TIME_TO_DIE,
 	TIME_TO_EAT,
 	STOP,
+	CHECK_STOP,
 	COUNT
 };
 
@@ -75,6 +76,7 @@ int		ft_strlen(char *str);
 int		ft_atoi(char *str);
 int		ft_is_uint(char *str);
 void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 t_game	*init_game(char **argv);
 void	free_game(t_game *game);
@@ -84,6 +86,7 @@ int		is_correct(char **args);
 int		start_game(t_game *game);
 int		is_dead(t_philosopher *thomas);
 long	get_last_eat(t_philosopher *thomas);
+int		is_stop(t_game *game);
 
 t_mutex	*register_mutex(enum e_MutexId id, int variant);
 t_mutex	*get_mutex_by_id(enum e_MutexId id, int variant);
