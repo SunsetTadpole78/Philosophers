@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:24:37 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/16 11:17:08 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/18 09:09:55 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 
 int	main(int argc, char **argv)
 {
-	t_game	*game;
+	t_simulation	*simulation;
 
 	if ((argc != 5 && argc != 6) || !is_correct(argv + 1))
 	{
-		write(2, argv[0], ft_strlen(argv[0]));
-		write(2, " <number_of_philosophers> <time_to_die> <time_to_eat> <time_to_sleep> [number_of_times_each_philosopher_must_eat]\n", 114);
+		invalid_arguments(argv);
 		return (1);
 	}
-	game = init_game(argv + 1);
-	if (!game)
+	simulation = init_simulation(argv + 1);
+	if (!simulation)
 	{
 		write(2, "Malloc error\n", 13);
 		return (2);
 	}
-	start_game(game);
-	free_game(game);
+	start_simulation(simulation);
+	free_simulation(simulation);
 	return (0);
 }

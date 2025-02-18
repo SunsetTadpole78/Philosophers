@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:44:40 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/17 17:27:05 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/18 09:10:16 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ typedef struct s_philosopher
 	t_mutex					*left_fork;
 	t_mutex					*right_fork;
 	struct s_philosopher	*next;
-	struct s_game			*game;
+	struct s_simulation		*simulation;
 }	t_philosopher;
 
-typedef struct s_game
+typedef struct s_simulation
 {
 	int				count;
 	int				time_to_die;
@@ -71,28 +71,51 @@ typedef struct s_game
 	long			start_time;
 	int				stop;
 	t_philosopher	*first;
-}	t_game;
+}	t_simulation;
 
-int		ft_strlen(char *str);
-int		ft_atoi(char *str);
-int		ft_is_uint(char *str);
-void	*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+void			invalid_arguments(char **argv);
+int				ft_strlen(char *str);
+int				ft_atoi(char *str);
+int				ft_is_uint(char *str);
+void			*ft_realloc(void *ptr, size_t old_size, size_t new_size);
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
 
-t_game	*init_game(char **argv);
-void	free_game(t_game *game);
+t_simulation	*init_simulation(char **argv);
+void			free_simulation(t_simulation *simulation);
 
-int		is_correct(char **args);
+int				is_correct(char **args);
 
-int		start_game(t_game *game);
-int		is_dead(t_philosopher *thomas);
-long	get_last_eat(t_philosopher *thomas);
-int		is_stop(t_game *game);
+int				take_forks(t_philosopher *thomas);
+void			drop_forks(t_philosopher *thomas);
 
-t_mutex	*register_mutex(enum e_MutexId id, int variant);
-t_mutex	*get_mutex_by_id(enum e_MutexId id, int variant);
-int		lock_mutex(enum e_MutexId id, int variant);
-int		unlock_mutex(enum e_MutexId id, int variant);
-void	unlock_all_mutexs(void);
-void	destroy_mutexs(void);
+void			rip(t_philosopher *thomas);
+long			get_last_eat(t_philosopher *thomas);
+void			eat(t_philosopher *thomas);
+void			go_sleep(t_philosopher *thomas);
+void			think(t_philosopher *thomas);
+
+int				is_dead(t_philosopher *thomas);
+int				check_others(t_philosopher *thomas);
+
+int				start_simulation(t_simulation *simulation);
+int				is_stop(t_simulation *simulation);
+int				check_others(t_philosopher *thomas);
+
+void			check_meals(t_philosopher *thomas);
+
+void			look_spaghetti_bowl(t_philosopher *thomas);
+void			safe_display(char *message, t_philosopher *thomas,
+					int exception);
+
+long			timestramp(void);
+long			simulation_timestramp(t_simulation *simulation);
+void			ft_usleep(int ms);
+long			get_start_time(t_simulation *simulation);
+
+t_mutex			*register_mutex(enum e_MutexId id, int variant);
+t_mutex			*get_mutex_by_id(enum e_MutexId id, int variant);
+int				lock_mutex(enum e_MutexId id, int variant);
+int				unlock_mutex(enum e_MutexId id, int variant);
+void			unlock_all_mutexs(void);
+void			destroy_mutexs(void);
 #endif

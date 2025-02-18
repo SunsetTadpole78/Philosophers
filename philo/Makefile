@@ -5,11 +5,23 @@ INCLUDE_DIR = include
 OBJS_DIR = objs
 
 FILES = philo.c		\
-	mutex_manager.c	\
+	mutexs/factory.c	\
+	mutexs/locker.c	\
+	life/death.c	\
+	life/eat.c	\
+	life/forks.c	\
+	life/look.c	\
+	life/sleep.c	\
+	life/think.c	\
 	initializer.c	\
 	destructor.c	\
-	args_checker.c	\
-	game.c	\
+	checkers/args.c	\
+	checkers/death.c	\
+	checkers/meals.c	\
+	simulation.c	\
+	utils/time.c	\
+	utils/display.c	\
+	utils/error.c	\
 	utils/ft_atoi.c	\
 	utils/ft_is_uint.c	\
 	utils/ft_realloc.c	\

@@ -12,23 +12,23 @@
 
 #include "philo.h"
 
-void	free_game(t_game *game)
+void	free_simulation(t_simulation *simulation)
 {
 	int				i;
 	t_philosopher	*cur;
 	t_philosopher	*tmp;
 
 	i = 0;
-	cur = game->first;
-	while (i < game->count)
+	cur = simulation->first;
+	while (i < simulation->count)
 	{
 		pthread_join(cur->thread, NULL);
 		cur = cur->next;
 		i++;
 	}
 	i = 0;
-	cur = game->first;
-	while (i < game->count)
+	cur = simulation->first;
+	while (i < simulation->count)
 	{
 		tmp = cur;
 		cur = cur->next;
@@ -36,5 +36,5 @@ void	free_game(t_game *game)
 		i++;
 	}
 	destroy_mutexs();
-	free(game);
+	free(simulation);
 }

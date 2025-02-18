@@ -12,7 +12,8 @@
 
 #include "philo.h"
 
-t_philosopher	*create_philosopher(int id, t_game *game, t_philosopher *old)
+t_philosopher	*create_philosopher(int id, t_simulation *simulation,
+	t_philosopher *old)
 {
 	t_philosopher	*thomas;
 
@@ -25,7 +26,7 @@ t_philosopher	*create_philosopher(int id, t_game *game, t_philosopher *old)
 	thomas->last_eat = -1;
 	thomas->last_sleep = -1;
 	thomas->meals_count = 0;
-	thomas->game = game;
+	thomas->simulation = simulation;
 	if (old)
 		old->right_fork = thomas->left_fork;
 	register_mutex(LAST_EAT, id);
@@ -44,41 +45,41 @@ static void	register_mutexs(void)
 	register_mutex(COUNT, 0);
 }
 
-static void	create_philosophers(t_game *game)
+static void	create_philosophers(t_simulation *simulation)
 {
 	int				i;
 	t_philosopher	*cur;
 
-	game->first = create_philosopher(1, game, NULL);
+	simulation->first = create_philosopher(1, simulation, NULL);
 	i = 1;
-	cur = game->first;
-	while (i < game->count)
+	cur = simulation->first;
+	while (i < simulation->count)
 	{
-		cur->next = create_philosopher(i + 1, game, cur);
+		cur->next = create_philosopher(i + 1, simulation, cur);
 		i++;
 		cur = cur->next;
 	}
-	cur->next = game->first;
-	cur->right_fork = game->first->left_fork;
+	cur->next = simulation->first;
+	cur->right_fork = simulation->first->left_fork;
 }
 
-t_game	*init_game(char **argv)
+t_simulation	*init_simulation(char **argv)
 {
-	t_game	*game;
+	t_simulation	*simulation;
 
-	game = malloc(sizeof(t_game));
-	if (!game)
+	simulation = malloc(sizeof(t_simulation));
+	if (!simulation)
 		return (NULL);
-	game->count = ft_atoi(argv[0]);
-	game->time_to_die = ft_atoi(argv[1]);
-	game->time_to_eat = ft_atoi(argv[2]);
-	game->time_to_sleep = ft_atoi(argv[3]);
-	game->min_meals_count = -1;
+	simulation->count = ft_atoi(argv[0]);
+	simulation->time_to_die = ft_atoi(argv[1]);
+	simulation->time_to_eat = ft_atoi(argv[2]);
+	simulation->time_to_sleep = ft_atoi(argv[3]);
+	simulation->min_meals_count = -1;
 	if (argv[4])
-		game->min_meals_count = ft_atoi(argv[4]);
-	game->start_time = -1;
-	game->stop = 0;
+		simulation->min_meals_count = ft_atoi(argv[4]);
+	simulation->start_time = -1;
+	simulation->stop = 0;
 	register_mutexs();
-	create_philosophers(game);
-	return (game);
+	create_philosophers(simulation);
+	return (simulation);
 }
