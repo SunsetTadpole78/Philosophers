@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 19:15:30 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/18 10:02:11 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/19 09:30:10 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ void	*life(void *args)
 	int				unlock_forks;
 
 	thomas = (t_philosopher *)args;
+	if (thomas->id % 2 == 1)
+		ft_usleep(50);
 	lock_mutex(START_TIME, 0);
 	if (thomas->simulation->start_time == -1)
 		thomas->simulation->start_time = timestramp();

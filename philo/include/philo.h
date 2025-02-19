@@ -113,7 +113,7 @@ void			ft_usleep(int ms);
 long			get_start_time(t_simulation *simulation);
 
 t_mutex			*register_mutex(enum e_MutexId id, int variant);
-t_mutex			*get_mutex_by_id(enum e_MutexId id, int variant);
+t_mutex			*get_mutex(enum e_MutexId id, int variant);
 int				lock_mutex(enum e_MutexId id, int variant);
 int				unlock_mutex(enum e_MutexId id, int variant);
 void			unlock_all_mutexs(void);

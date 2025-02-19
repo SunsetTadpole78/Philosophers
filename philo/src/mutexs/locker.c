@@ -26,7 +26,7 @@ int	lock_mutex(enum e_MutexId id, int variant)
 {
 	t_mutex	*mutex;
 
-	mutex = get_mutex_by_id(id, variant);
+	mutex = get_mutex(id, variant);
 	pthread_mutex_lock(&mutex->lock);
 	mutex->is_lock = 1;
 	pthread_mutex_unlock(&mutex->lock);
@@ -37,7 +37,7 @@ int	unlock_mutex(enum e_MutexId id, int variant)
 {
 	t_mutex	*mutex;
 
-	mutex = get_mutex_by_id(id, variant);
+	mutex = get_mutex(id, variant);
 	pthread_mutex_lock(&mutex->lock);
 	mutex->is_lock = 0;
 	pthread_mutex_unlock(&mutex->lock);

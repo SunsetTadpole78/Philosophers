@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:18:18 by lroussel          #+#    #+#             */
-/*   Updated: 2025/02/18 09:18:20 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:15:15 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,21 +38,19 @@ t_mutex	*register_mutex(enum e_MutexId id, int variant)
 	m->mutexs[m->count] = malloc(sizeof(t_mutex));
 	m->mutexs[m->count]->id = id;
 	m->mutexs[m->count]->variant = variant;
-	pthread_mutex_init(&(m->mutexs[m->count]->mutex), NULL);
-	pthread_mutex_init(&(m->mutexs[m->count]->lock), NULL);
+	pthread_mutex_init(&m->mutexs[m->count]->mutex, NULL);
+	pthread_mutex_init(&m->mutexs[m->count]->lock, NULL);
 	m->mutexs[m->count]->is_lock = 0;
 	m->mutexs[++m->count] = NULL;
 	return (m->mutexs[m->count - 1]);
 }
 
-t_mutex	*get_mutex_by_id(enum e_MutexId id, int variant)
+t_mutex	*get_mutex(enum e_MutexId id, int variant)
 {
-	t_mutexs	*mu;
 	t_mutex		**m;
 	int			i;
 
-	mu = mutexs();
-	m = mu->mutexs;
+	m = mutexs()->mutexs;
 	i = 0;
 	while (m[i])
 	{
