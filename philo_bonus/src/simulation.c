@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:04:41 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 00:49:19 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:03:36 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	*life(void *args)
 
 static void	init_life(t_simulation *simulation, t_philosopher *thomas)
 {
+	simulation->start_time = timestamp();
+	thomas->last_eat = simulation->start_time;
 	if (thomas->id == 1)
 	{
 		sem_wait(simulation->stop_sem);
@@ -67,8 +69,6 @@ static void	init_life(t_simulation *simulation, t_philosopher *thomas)
 		sem_post(simulation->deadlock_sem);
 		set_started(thomas);
 	}
-	simulation->start_time = timestamp();
-	thomas->last_eat = simulation->start_time;
 }
 
 void	start_simulation(t_simulation *simulation)

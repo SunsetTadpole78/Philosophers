@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   meals.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 14:24:37 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 01:08:30 by lroussel         ###   ########.fr       */
+/*   Created: 2025/04/17 00:51:29 by lroussel          #+#    #+#             */
+/*   Updated: 2025/04/17 01:05:37 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	main(int argc, char **argv)
+void	*check_meals(void *args)
 {
 	t_simulation	*simulation;
-	int				i;
+	int			i;
 
-	if ((argc != 5 && argc != 6) || !is_correct(argv + 1))
-	{
-		invalid_arguments(argv);
-		return (1);
-	}
-	simulation = init_simulation(argv + 1);
-	if (!simulation)
-	{
-		write(2, "Malloc error\n", 13);
-		return (2);
-	}
-	start_simulation(simulation);
-//	start_meals_checker(simulation);
+	simulation = (t_simulation *)args;
 	i = 0;
 	while (i++ < simulation->count)
-		wait(NULL);
-	free_simulation(simulation);
-	return (0);
+		sem_wait(simulation->meals_sem);
+	sem_post(simulation->stop_sem);
+	return (NULL);
+}
+
+
+void	start_meals_checker(t_simulation *simulation)
+{
+	pthread_create(&simulation->meals, NULL, check_meals, simulation);
+	pthread_join(simulation->meals, NULL);
 }

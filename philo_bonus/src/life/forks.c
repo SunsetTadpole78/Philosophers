@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 23:12:19 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/16 23:50:12 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:13:42 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	take_forks(t_philosopher *thomas)
 {
 	sem_wait(thomas->simulation->forks_sem);
 	safe_display("has taken a fork", thomas, 0);
-	if (is_stop(thomas))
+	if (thomas->simulation->count == 1)
 	{
 		sem_post(thomas->simulation->forks_sem);
 		return (0);

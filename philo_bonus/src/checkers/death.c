@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:59:07 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 00:49:35 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:10:53 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	on_death(t_philosopher *thomas)
 	thomas->dead = 1;
 	sem_post(thomas->simulation->check_stop_sem);
 	sem_post(thomas->simulation->stop_sem);
-	usleep(500);
+	usleep(50000);
 	sem_post(thomas->simulation->print_sem);
 	return (1);
 }

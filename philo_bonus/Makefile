@@ -10,6 +10,7 @@ FILES = philo.c	\
 	simulation.c	\
 	checkers/args.c	\
 	checkers/death.c	\
+	checkers/meals.c	\
 	life/eat.c	\
 	life/forks.c	\
 	life/sleep.c	\
