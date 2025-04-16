@@ -9,6 +9,7 @@ FILES = philo.c	\
 	destructor.c	\
 	simulation.c	\
 	checkers/args.c	\
+	checkers/death.c	\
 	life/eat.c	\
 	life/forks.c	\
 	life/sleep.c	\

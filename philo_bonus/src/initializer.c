@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 15:01:27 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 00:16:34 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 00:31:21 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ static void	init_semaphores(t_simulation *simulation)
 	simulation->stop_sem = sem_open("/stop", O_CREAT, 0600, 1);
 	simulation->check_stop_sem = sem_open("/check_stop", O_CREAT, 0600, 1);
 	simulation->print_sem = sem_open("/print", O_CREAT, 0600, 1);
-	simulation->forks_sem = sem_open("/forks", O_CREAT, 0600, simulation->count);
+	simulation->forks_sem = sem_open("/forks", O_CREAT, 0600,
+			simulation->count);
 	simulation->deadlock_sem = sem_open("/deadlock", O_CREAT, 0600, 1);
 	simulation->started_sem = sem_open("/started", O_CREAT, 0600, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:48:20 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 00:09:43 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 00:30:50 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	safe_display(char *message, t_philosopher *thomas, int exception)
 {
 	int	stop;
-	
+
 	sem_wait(thomas->simulation->print_sem);
 	stop = is_stop(thomas);
 	if (exception || !stop)

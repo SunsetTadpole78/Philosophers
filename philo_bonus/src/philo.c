@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:24:37 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/16 21:52:39 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 00:48:51 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	main(int argc, char **argv)
 {
 	t_simulation	*simulation;
+	int				i;
 
 	if ((argc != 5 && argc != 6) || !is_correct(argv + 1))
 	{
@@ -28,6 +29,9 @@ int	main(int argc, char **argv)
 		return (2);
 	}
 	start_simulation(simulation);
+	i = 0;
+	while (i++ < simulation->count)
+		wait(NULL);
 	free_simulation(simulation);
 	return (0);
 }
