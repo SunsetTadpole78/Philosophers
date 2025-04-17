@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:59:07 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 01:10:53 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:39:01 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static long	get_last_eat(t_philosopher *thomas)
 
 static int	on_death(t_philosopher *thomas)
 {
+	if (thomas->simulation->min_meals_count > 0)
+		sem_post(thomas->simulation->meals_sem);
 	sem_wait(thomas->simulation->print_sem);
 	if (is_stop(thomas))
 	{

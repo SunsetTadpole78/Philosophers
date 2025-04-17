@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 17:05:56 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 00:59:25 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 01:32:33 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	close_semaphores(t_simulation *simulation)
 	sem_close(simulation->deadlock_sem);
 	sem_close(simulation->started_sem);
 	sem_close(simulation->meals_sem);
+	sem_close(simulation->meals_check_sem);
 }
 
 void	free_simulation(t_simulation *simulation)
@@ -53,4 +54,5 @@ void	unlink_semaphores(void)
 	sem_unlink("/deadlock");
 	sem_unlink("/started");
 	sem_unlink("/meals");
+	sem_unlink("/meals_check");
 }

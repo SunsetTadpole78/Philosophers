@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:24:37 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 01:08:30 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 02:21:50 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ int	main(int argc, char **argv)
 		return (2);
 	}
 	start_simulation(simulation);
-//	start_meals_checker(simulation);
+	pthread_create(&simulation->meals, NULL, check_meals, simulation);
 	i = 0;
 	while (i++ < simulation->count)
-		wait(NULL);
+		waitpid(-1, NULL, 0);
+	pthread_join(simulation->meals, NULL);
 	free_simulation(simulation);
 	return (0);
 }

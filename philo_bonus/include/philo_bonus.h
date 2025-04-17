@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 14:27:19 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 01:04:20 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 02:28:06 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_simulation
 	int				time_to_sleep;
 	long			start_time;
 	t_philosopher	*first;
-	pthread_t				meals;
+	pthread_t		meals;
 	sem_t			*last_eat_sem;
 	sem_t			*stop_sem;
 	sem_t			*check_stop_sem;
@@ -54,6 +54,7 @@ typedef struct s_simulation
 	sem_t			*deadlock_sem;
 	sem_t			*started_sem;
 	sem_t			*meals_sem;
+	sem_t			*meals_check_sem;
 }	t_simulation;
 
 //checker
@@ -61,7 +62,8 @@ int				is_correct(char **args);
 void			*check_death(void *args);
 void			on_one_dead(t_philosopher *thomas);
 int				is_stop(t_philosopher *thomas);
-void			start_meals_checker(t_simulation *simulation);
+void			*check_meals(void *args);
+void			add_meal(t_philosopher *thomas);
 
 //errors
 void			invalid_arguments(char **argv);
