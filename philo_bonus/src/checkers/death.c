@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:59:07 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 01:39:01 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 10:43:25 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,9 @@ void	on_one_dead(t_philosopher *thomas)
 	sem_wait(thomas->simulation->check_stop_sem);
 	thomas->stop = 1;
 	sem_post(thomas->simulation->check_stop_sem);
+	sem_wait(thomas->simulation->meals_check_sem);
+	if (thomas->simulation->min_meals_count > 0
+		&& thomas->meals_count < thomas->simulation->min_meals_count)
+		sem_post(thomas->simulation->meals_sem);
+	sem_post(thomas->simulation->meals_check_sem);
 }
