@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 00:51:29 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 02:27:27 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 03:19:12 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	*check_meals(void *args)
 	t_simulation	*simulation;
 	int				i;
 
+	usleep(500);
 	simulation = (t_simulation *)args;
 	if (simulation->min_meals_count <= 0)
 		return (NULL);
