@@ -6,7 +6,7 @@
 /*   By: lroussel <lroussel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 17:04:41 by lroussel          #+#    #+#             */
-/*   Updated: 2025/04/17 09:55:54 by lroussel         ###   ########.fr       */
+/*   Updated: 2025/04/17 10:04:52 by lroussel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	*life(void *args)
 
 	thomas = (t_philosopher *)args;
 	if (thomas->id % 2 == 1)
-			usleep(500);
+		usleep(500);
 	while (1)
 	{
 		if (!think(thomas))
